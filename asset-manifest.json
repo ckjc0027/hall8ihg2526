@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/hall8ihg2526/static/css/main.da816d4a.css",
+    "main.js": "/hall8ihg2526/static/js/main.2c40a196.js",
+    "index.html": "/hall8ihg2526/index.html",
+    "main.da816d4a.css.map": "/hall8ihg2526/static/css/main.da816d4a.css.map",
+    "main.2c40a196.js.map": "/hall8ihg2526/static/js/main.2c40a196.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.da816d4a.css",
+    "static/js/main.2c40a196.js"
+  ]
+}

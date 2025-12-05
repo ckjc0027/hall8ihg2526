@@ -1,0 +1,8 @@
+{
+  "short_name": "IHG Tracker",
+  "name": "IHG 25/26 Tournament Tracker",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
