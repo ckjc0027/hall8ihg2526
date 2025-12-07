@@ -174,10 +174,26 @@
           id: Date.now(),
           sport: sports[0] || '',
           opponent: '',
-          date: new Date().toISOString().split('T')[0],
+          date: '',
           time: '12:00',
           score: '',
-          result: 'pending'
+          result: 'pending',
+          section: 'upcoming'
+        };
+        setMatches([...matches, newMatch]);
+        setEditingMatch(newMatch.id);
+      };
+
+      const addPastMatch = () => {
+        const newMatch = {
+          id: Date.now(),
+          sport: sports[0] || '',
+          opponent: '',
+          date: '',
+          time: '12:00',
+          score: '',
+          result: 'win',
+          section: 'history'
         };
         setMatches([...matches, newMatch]);
         setEditingMatch(newMatch.id);
@@ -205,9 +221,9 @@
       const now = new Date();
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString().split('T')[0];
       
-      const todayMatches = matches.filter(m => m.date >= today).sort((a, b) => new Date(a.date) - new Date(b.date));
-      const pastMatches = matches.filter(m => m.date < today).sort((a, b) => new Date(b.date) - new Date(a.date));
-      const filteredMatches = selectedSport === 'All Sports' ? pastMatches : pastMatches.filter(m => m.sport === selectedSport);
+      const upcomingMatches = matches.filter(m => m.section === 'upcoming' || (!m.section && m.date >= today)).sort((a, b) => new Date(a.date || '9999') - new Date(b.date || '9999'));
+      const historyMatches = matches.filter(m => m.section === 'history' || (!m.section && m.date && m.date < today)).sort((a, b) => new Date(b.date || '0') - new Date(a.date || '0'));
+      const filteredMatches = selectedSport === 'All Sports' ? historyMatches : historyMatches.filter(m => m.sport === selectedSport);
 
       if (isLoading) {
         return (
@@ -277,11 +293,11 @@
                 <h3 className="text-2xl font-semibold text-blue-300">Upcoming Matches</h3>
                 {isAdmin && <button onClick={addMatch} className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg flex items-center gap-2 transition"><Plus />Add Match</button>}
               </div>
-              {todayMatches.length === 0 ? (
+              {upcomingMatches.length === 0 ? (
                 <p className="text-gray-400 text-center py-4">No upcoming matches</p>
               ) : (
                 <div className="space-y-3">
-                  {todayMatches.map(match => (
+                  {upcomingMatches.map(match => (
                     <div key={match.id} className="p-4 bg-gray-800/50 rounded-lg border border-gray-700">
                       {editingMatch === match.id && isAdmin ? (
                         <div className="space-y-2">
@@ -329,7 +345,7 @@
                 <h3 className="text-2xl font-semibold text-purple-300">Match History</h3>
                 <div className="flex gap-2">
                   {isAdmin && (
-                    <button onClick={addMatch} className="px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded-lg flex items-center gap-2 transition">
+                    <button onClick={addPastMatch} className="px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded-lg flex items-center gap-2 transition">
                       <Plus />Add Past Match
                     </button>
                   )}
