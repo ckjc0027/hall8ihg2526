@@ -334,16 +334,41 @@
                 <div className="space-y-3">
                   {filteredMatches.map(match => (
                     <div key={match.id} className="p-4 bg-gray-700/50 rounded-lg">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <div className="text-sm text-purple-400 font-semibold">{match.sport}</div>
-                          <div className="text-lg">{myTeamName} vs {match.opponent}</div>
-                          <div className="text-sm text-gray-400">{match.date} • {match.score}</div>
+                      {editingMatch === match.id && isAdmin ? (
+                        <div className="space-y-2">
+                          <select value={match.sport} onChange={(e) => updateMatch(match.id, 'sport', e.target.value)} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white">
+                            {sports.map(s => <option key={s} value={s}>{s}</option>)}
+                          </select>
+                          <input type="text" value={match.opponent} onChange={(e) => updateMatch(match.id, 'opponent', e.target.value)} placeholder="Opponent" className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white" />
+                          <input type="date" value={match.date} onChange={(e) => updateMatch(match.id, 'date', e.target.value)} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white" />
+                          <input type="time" value={match.time} onChange={(e) => updateMatch(match.id, 'time', e.target.value)} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white" />
+                          <input type="text" value={match.score} onChange={(e) => updateMatch(match.id, 'score', e.target.value)} placeholder="Score" className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white" />
+                          <select value={match.result} onChange={(e) => updateMatch(match.id, 'result', e.target.value)} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white">
+                            <option value="pending">Pending</option>
+                            <option value="win">Win</option>
+                            <option value="loss">Loss</option>
+                            <option value="draw">Draw</option>
+                          </select>
+                          <div className="flex gap-2">
+                            <button onClick={() => setEditingMatch(null)} className="flex-1 px-4 py-2 bg-green-600 hover:bg-green-500 rounded transition">Save</button>
+                            <button onClick={() => deleteMatch(match.id)} className="px-4 py-2 bg-red-600 hover:bg-red-500 rounded transition">Delete</button>
+                          </div>
                         </div>
-                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${match.result === 'win' ? 'bg-green-500/20 text-green-400' : match.result === 'loss' ? 'bg-red-500/20 text-red-400' : 'bg-gray-500/20 text-gray-400'}`}>
-                          {match.result.toUpperCase()}
-                        </span>
-                      </div>
+                      ) : (
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <div className="text-sm text-purple-400 font-semibold">{match.sport}</div>
+                            <div className="text-lg">{myTeamName} vs {match.opponent}</div>
+                            <div className="text-sm text-gray-400">{match.date} • {match.time} • {match.score}</div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${match.result === 'win' ? 'bg-green-500/20 text-green-400' : match.result === 'loss' ? 'bg-red-500/20 text-red-400' : match.result === 'draw' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-gray-500/20 text-gray-400'}`}>
+                              {match.result.toUpperCase()}
+                            </span>
+                            {isAdmin && <button onClick={() => setEditingMatch(match.id)} className="p-2 hover:bg-gray-700 rounded transition"><Edit2 size={16} /></button>}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
