@@ -356,16 +356,21 @@
                         </div>
                       ) : (
                         <div className="flex justify-between items-center">
-                          <div>
+                          <div className="flex-1">
                             <div className="text-sm text-purple-400 font-semibold">{match.sport}</div>
                             <div className="text-lg">{myTeamName} vs {match.opponent}</div>
                             <div className="text-sm text-gray-400">{match.date} • {match.time} • {match.score}</div>
                           </div>
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2">
                             <span className={`px-3 py-1 rounded-full text-sm font-semibold ${match.result === 'win' ? 'bg-green-500/20 text-green-400' : match.result === 'loss' ? 'bg-red-500/20 text-red-400' : match.result === 'draw' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-gray-500/20 text-gray-400'}`}>
                               {match.result.toUpperCase()}
                             </span>
-                            {isAdmin && <button onClick={() => setEditingMatch(match.id)} className="p-2 hover:bg-gray-700 rounded transition"><Edit2 size={16} /></button>}
+                            {isAdmin && (
+                              <div className="flex gap-1">
+                                <button onClick={() => setEditingMatch(match.id)} className="p-2 hover:bg-gray-600 rounded transition" title="Edit"><Edit2 size={16} /></button>
+                                <button onClick={() => deleteMatch(match.id)} className="p-2 hover:bg-red-900/50 rounded transition text-red-400" title="Delete"><Trash2 size={16} /></button>
+                              </div>
+                            )}
                           </div>
                         </div>
                       )}
