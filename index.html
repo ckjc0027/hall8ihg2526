@@ -201,7 +201,10 @@
         });
       };
 
-      const today = new Date().toISOString().split('T')[0];
+      // Get current date in local timezone (not UTC)
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString().split('T')[0];
+      
       const todayMatches = matches.filter(m => m.date >= today).sort((a, b) => new Date(a.date) - new Date(b.date));
       const pastMatches = matches.filter(m => m.date < today).sort((a, b) => new Date(b.date) - new Date(a.date));
       const filteredMatches = selectedSport === 'All Sports' ? pastMatches : pastMatches.filter(m => m.sport === selectedSport);
