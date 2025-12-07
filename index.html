@@ -305,7 +305,7 @@
                           <div>
                             <div className="text-sm text-blue-400 font-semibold">{match.sport}</div>
                             <div className="text-lg">{myTeamName} vs {match.opponent}</div>
-                            <div className="text-sm text-gray-400">{match.time} • {match.score || 'TBD'}</div>
+                            <div className="text-sm text-gray-400">{match.date} • {match.time} • {match.score || 'TBD'}</div>
                           </div>
                           <div className="flex items-center gap-3">
                             <span className={`px-3 py-1 rounded-full text-sm font-semibold ${match.result === 'win' ? 'bg-green-500/20 text-green-400' : match.result === 'loss' ? 'bg-red-500/20 text-red-400' : match.result === 'draw' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-gray-500/20 text-gray-400'}`}>
@@ -324,10 +324,17 @@
             <div className="mb-8 p-6 bg-gray-800 border border-gray-700 rounded-lg">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-2xl font-semibold text-purple-300">Match History</h3>
-                <select value={selectedSport} onChange={(e) => setSelectedSport(e.target.value)} className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white">
-                  <option value="All Sports">All Sports</option>
-                  {sports.map(s => <option key={s} value={s}>{s}</option>)}
-                </select>
+                <div className="flex gap-2">
+                  {isAdmin && (
+                    <button onClick={addMatch} className="px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded-lg flex items-center gap-2 transition">
+                      <Plus />Add Past Match
+                    </button>
+                  )}
+                  <select value={selectedSport} onChange={(e) => setSelectedSport(e.target.value)} className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white">
+                    <option value="All Sports">All Sports</option>
+                    {sports.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                </div>
               </div>
               {filteredMatches.length === 0 ? (
                 <p className="text-gray-400 text-center py-4">No past matches</p>
