@@ -200,7 +200,17 @@
       };
 
       const updateMatch = (id, field, value) => {
-        setMatches(matches.map(m => m.id === id ? { ...m, [field]: value } : m));
+        setMatches(matches.map(m => {
+          if (m.id === id) {
+            const updated = { ...m, [field]: value };
+            // If result changes from pending to win/loss/draw, move to history
+            if (field === 'result' && value !== 'pending' && m.section === 'upcoming') {
+              updated.section = 'history';
+            }
+            return updated;
+          }
+          return m;
+        }));
       };
 
       const deleteMatch = (id) => {
