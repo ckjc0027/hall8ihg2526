@@ -232,7 +232,17 @@
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString().split('T')[0];
       
       const upcomingMatches = matches.filter(m => m.section === 'upcoming' || (!m.section && m.date >= today)).sort((a, b) => new Date(a.date || '9999') - new Date(b.date || '9999'));
-      const historyMatches = matches.filter(m => m.section === 'history' || (!m.section && m.date && m.date < today)).sort((a, b) => new Date(b.date || '0') - new Date(a.date || '0'));
+      const historyMatches = matches.filter(m => m.section === 'history' || (!m.section && m.date && m.date < today)).sort((a, b) => {
+        const dateA = a.date || '0';
+        const dateB = b.date || '0';
+        if (dateA !== dateB) {
+          return new Date(dateB) - new Date(dateA); // Latest date first
+        }
+        // If same date, sort by time (latest time first)
+        const timeA = a.time || '00:00';
+        const timeB = b.time || '00:00';
+        return timeB.localeCompare(timeA);
+      });
       const filteredMatches = selectedSport === 'All Sports' ? historyMatches : historyMatches.filter(m => m.sport === selectedSport);
 
       if (isLoading) {
