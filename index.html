@@ -432,7 +432,15 @@
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {sports.map(sport => {
                   const placing = finalPlacing[sport] || { placing: 1, totalTeams: 1, inProgress: true };
-                  const suffix = placing.placing === 1 ? 'st' : placing.placing === 2 ? 'nd' : placing.placing === 3 ? 'rd' : 'th';
+                  const getSuffix = (num) => {
+                    const j = num % 10;
+                    const k = num % 100;
+                    if (j === 1 && k !== 11) return 'st';
+                    if (j === 2 && k !== 12) return 'nd';
+                    if (j === 3 && k !== 13) return 'rd';
+                    return 'th';
+                  };
+                  const suffix = getSuffix(placing.placing);
                   return (
                     <div key={sport} className="p-4 bg-gray-700 rounded-lg border border-gray-600">
                       <h4 className="text-lg font-semibold text-gray-300 mb-3">{sport}</h4>
